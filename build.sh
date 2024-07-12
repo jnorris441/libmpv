@@ -43,7 +43,8 @@ export GPL_SWITCH
 export OptimizationLevel=2
 
 # add maccatalyst
-PLATFORMS="macos ios tvos isimulator tvsimulator"
+#PLATFORMS="macos ios tvos xros isimulator tvsimulator"
+PLATFORMS="xros"
 LIBRARIES="openssl libpng freetype fribidi harfbuzz libass moltenvk shaderc littlecms libplacebo libdav1d libbluray ffmpeg uchardet luajit mpv"
 #LIBRARIES="openssl libpng freetype fribidi harfbuzz libass readline gmp nettle gnutls smbclient shaderc littlecms libplacebo libdav1d libbluray ffmpeg uchardet luajit mpv"
 #LIBRARIES="openssl libpng freetype fribidi harfbuzz libass shaderc littlecms libplacebo libdav1d libbluray ffmpeg uchardet luajit mpv"
@@ -144,6 +145,15 @@ for PLATFORM in $PLATFORMS; do
         DEPLOYMENT_TARGET="-mtvos-version-min=$MIN_VERSION"
         CFLAG_HAVE_FORK=" -DHAVE_FORK=0 "
     #DEPLOYMENT_TARGET_LDFLAG="-Wl,-tvos_version_min,$MIN_VERSION"
+    elif [[ "$PLATFORM" = "xros" ]]; then
+        MIN_VERSION="1.0"
+        ARCHS="arm64"
+        SDK_VERSION=$(xcrun -sdk xros --show-sdk-version)
+        PLATFORM_NAME="VisionOS"
+        SDKPATH="$(xcrun -sdk xros --show-sdk-path)"
+        DEPLOYMENT_TARGET="-mtvos-version-min=$MIN_VERSION"
+        CFLAG_HAVE_FORK=" -DHAVE_FORK=0 "
+    #DEPLOYMENT_TARGET_LDFLAG="-Wl,-xros_version_min,$MIN_VERSION"
     elif [[ "$PLATFORM" = "isimulator" ]]; then
         MIN_VERSION="13.0"
         if [[ -z $ARCHS_FILTERS ]]; then
@@ -198,6 +208,8 @@ for PLATFORM in $PLATFORMS; do
             HOSTFLAG_PLATFORM="ios"
         elif [[ $PLATFORM = "tvos" || $PLATFORM = "tvsimulator" ]]; then
             HOSTFLAG_PLATFORM="tvos"
+        elif [[ $PLATFORM = "xros" ]]; then
+            HOSTFLAG_PLATFORM="xros"            
         fi
         HOSTFLAG="$ARCH-$HOSTFLAG_PLATFORM-darwin"
         if [[ $ARCH = "arm64" ]]; then

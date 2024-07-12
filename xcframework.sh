@@ -12,7 +12,7 @@ Help()
 }
 
 LIBRARIES="crypto ssl srt png freetype brotli fribidi harfbuzz ass readline gmp nettle gnutls smbclient shaderc lcms2 dovi placebo dav1d bluray avcodec avdevice avfilter avformat avutil swresample swscale uchardet luajit mpv"
-PLATFORMS="macos ios tvos isimulator tvsimulator"
+PLATFORMS="macos ios tvos xros isimulator tvsimulator"
 ROOT="$(pwd)"
 Framework="$ROOT/Framework"
 
@@ -44,7 +44,7 @@ for LIBRARY in $LIBRARIES; do
     fi
     for PLATFORM in $PLATFORMS; do
         ARCHS="x86_64 arm64"
-        if [[ "$PLATFORM" = "ios" || "$PLATFORM" = "tvos" ]]; then
+        if [[ "$PLATFORM" = "ios" || "$PLATFORM" = "tvos" || "$PLATFORM" = "xros" ]]; then
             ARCHS="arm64"
         fi
         SCRATCH="$ROOT/build/scratch-$PLATFORM"
