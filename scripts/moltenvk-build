@@ -2,21 +2,23 @@
 
 #unset CC
 cd $SRC/MoltenVK
-git apply $ROOT/patch/moltenvk/moltenvk.patch || true
-./fetchDependencies --all
+#git apply $ROOT/patch/moltenvk/moltenvk.patch || true
+./fetchDependencies --visionos
 if [[ ! -z $DEBUG_SWITCH ]]; then
     make all-debug
 else
     make all
 fi
-git stash
+#do not git stash
 mkdir -p $ROOT/Framework
-cp -R ./Package/Release/MoltenVK/MoltenVK.xcframework $ROOT/Framework/MoltenVK.xcframework
+#cp -R ./Package/Release/MoltenVK/MoltenVK.xcframework $ROOT/Framework/MoltenVK.xcframework
+cp -R ./Package/Latest/MoltenVK/dynamic/MoltenVK.xcframework $ROOT/Framework/MoltenVK.xcframework
 
-PLATFORMS="macos ios tvos isimulator tvsimulator"
+#PLATFORMS="macos ios tvos xros isimulator tvsimulator"
+PLATFORMS="xros"
 for PLATFORM in $PLATFORMS; do
         ARCHS="x86_64 arm64"
-        if [[ "$PLATFORM" = "ios" || "$PLATFORM" = "tvos" ]]; then
+        if [[ "$PLATFORM" = "ios" || "$PLATFORM" = "tvos" || "$PLATFORM" = "xros" ]]; then
             ARCHS="arm64"
         fi
         if [[ "$PLATFORM" = "ios" ]]; then
@@ -25,6 +27,9 @@ for PLATFORM in $PLATFORMS; do
         elif [[ "$PLATFORM" = "tvos" ]]; then
             framework_name="tvos-arm64_arm64e"
             FRAMEWORKS=" -framework UIKit "
+        elif [[ "$PLATFORM" = "xros" ]]; then
+            framework_name="xros-arm64_arm64e"
+            FRAMEWORKS=" -framework UIKit "            
         elif [[ "$PLATFORM" = "macos" ]]; then
             framework_name="macos-arm64_x86_64"
             FRAMEWORKS=" -framework IOKit -framework APPKit "

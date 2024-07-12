@@ -53,4 +53,5 @@ $SRC/$1/configure --prefix=$SCRATCH/$ARCH $FFMPEG_OPTIONS \
 		 
 make -j5 -s
 make -j5 install -s
-cd $SRC/$1 && git stash && cd -
+#do not git stash
+cd $SRC/$1  && cd -

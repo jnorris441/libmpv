@@ -24,4 +24,5 @@ fi
 meson setup $BUILDDIR $MESON_COMMON_OPTIONS $opts -Dswift-flags="-sdk $SDKPATH -target $ARCH-apple-macos10.15"
 meson compile -C $BUILDDIR
 meson install -C $BUILDDIR
-cd $SRC/$1 && git stash && cd -
+# do not git stash
+cd $SRC/$1 && cd -
